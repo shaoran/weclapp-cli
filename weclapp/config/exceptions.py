@@ -41,4 +41,4 @@ class ConfigUnableToRead(ConfigError):
     pass
 
 
-__all__ = [ 'ConfigNotFound', 'ConfigCannotWrite', 'ConfigParsedFailed' ]
+__all__ = [ 'ConfigNotFound', 'ConfigCannotWrite', 'ConfigParsedFailed', 'ConfigUnableToRead' ]
