@@ -24,7 +24,7 @@ setup(name='weclapp-cli',
     keywords='weclapp activities uploader',
     packages=find_packages(),
     python_requires='>=3',
-    install_requires=[],
+    install_requires=['PyYAML'],
     entry_points={
         'console_scripts': [
             'weclapp-cli = weclapp.bin.weclapp:main'
