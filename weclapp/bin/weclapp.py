@@ -1,6 +1,4 @@
-
+from ..app import WeclappApp
 
 def main():
-    print("MAIN")
-
-    return 0
+    return WeclappApp().run()
