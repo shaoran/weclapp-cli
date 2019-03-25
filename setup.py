@@ -24,7 +24,7 @@ setup(name='weclapp-cli',
     keywords='weclapp activities uploader',
     packages=find_packages(),
     python_requires='>=3',
-    install_requires=['PyYAML'],
+    install_requires=['PyYAML', 'colorama'],
     entry_points={
         'console_scripts': [
             'weclapp-cli = weclapp.bin.weclapp:main'
