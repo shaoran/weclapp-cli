@@ -1,10 +1,11 @@
-class ConfigError(Exception):
+from ..exception import WeclappBaseException
+
+class ConfigError(WeclappBaseException):
     """Base class for config exceptions"""
 
     def __init__(self, *args, path=None):
         if path is not None:
             cfg = 'config path: %s' % path
-            print(len(args))
             if len(args) == 1:
                 args = ("%s -- %s" % (args[0], cfg),)
             else:
