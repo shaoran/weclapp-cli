@@ -93,4 +93,15 @@ class Config(object):
         self.config = config
 
     def save(self):
-        pass
+        if self.config is None:
+            raise ConfigCannotWrite("No config has been created")
+
+        cfg_dir = os.path.dirname(self.path)
+
+        try:
+            os.makedirs(cfg_dir, exist_ok=True)
+            fp = open(self.path, "w")
+            yaml.dump(self.config, fp, explicit_start=True)
+            fp.close()
+        except Exception as e:
+            raise ConfigCannotWrite("Could not save config file: %s" % str(e), path=self.path)
