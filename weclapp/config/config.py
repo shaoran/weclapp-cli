@@ -31,7 +31,7 @@ class Config(object):
 
         try:
             fp = open(self.path, "r")
-            self.config = yaml.load(fp)
+            self.config = yaml.load(fp, Loader=yaml.SafeLoader)
         except Exception as e:
             raise ConfigParsedFailed("Could not open config file: %s" % str(e), path=self.path)
 
