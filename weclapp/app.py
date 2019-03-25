@@ -4,10 +4,11 @@ from argparse import ArgumentParser
 
 from .config.config import def_config
 
-from .modules import ConfigModule
+from .modules import ConfigModule, ProjectModule
 
 modules = [
     ConfigModule,
+    ProjectModule
 ]
 
 class WeclappApp(object):
