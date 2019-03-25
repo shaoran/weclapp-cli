@@ -40,10 +40,18 @@ class ConfigModule(BaseModule):
         if self.namespace.list:
             return self.list_config()
 
+        cfg = Config(path=self.namespace.config)
+
         if not self.namespace.batch:
             print('Generating a new configuration file %s' % self.namespace.config)
+            try:
+                cfg.parse()
+                self.namespace.domain = cfg.config.get("domain", None)
+                self.namespace.path = cfg.config.get("path", None)
+                self.namespace.apitoken = cfg.config.get("apitoken", None)
+            except:
+                pass
 
-        cfg = Config(path=self.namespace.config)
 
         args = {}
 
