@@ -12,9 +12,10 @@ class Config(object):
 
     # (key, help, default)
     config_values = (
-        ('domain', 'Your weclapp domain', None),
-        ('path', 'The API path', '/webapp/api/v1'),
-        ('apitoken', 'Your API TOKEN', None),
+        ('domain', 'Your weclapp domain', None, str),
+        ('path', 'The API path', '/webapp/api/v1', str),
+        ('apitoken', 'Your API TOKEN', None, str),
+        ('ssl', 'Use SSL', "yes", bool)
     )
 
     def __init__(self, path=def_config):
@@ -56,7 +57,7 @@ class Config(object):
         """
         config = {}
 
-        for key, helptext, default in self.config_values:
+        for key, helptext, default, klass in self.config_values:
             val = kwargs.get(key, None)
 
             if val is not None and verbose is False:
@@ -82,6 +83,15 @@ class Config(object):
                     continue # keep asking
                 elif newval == '':
                     newval = default
+
+                if klass == bool:
+                    newval = newval.lower()
+                    if newval in [ "true", "yes", "t", "y" ]:
+                        newval = True
+                    elif newval in [ "false", "no", "f", "n" ]:
+                        newval = False
+                    else:
+                        continue # keep asking
 
                 keep_reading = False
 

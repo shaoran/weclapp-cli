@@ -33,6 +33,8 @@ class ConfigModule(BaseModule):
                 help='The path of the public API, default: %s' % def_path)
         parser.add_argument('-t', '--api-token', action='store', dest='apitoken', metavar='API-TOKEN',
                 help='Your API-TOKEN. Log in into weclapp, go to the account setting where you\'ll find the API TOKEN')
+        parser.add_argument('-s', '--ssl', action='store', dest='ssl', default=True,
+                help='Use SSL to access public API')
         parser.set_defaults(module = ConfigModule)
 
 
@@ -49,6 +51,9 @@ class ConfigModule(BaseModule):
                 self.namespace.domain = cfg.config.get("domain", None)
                 self.namespace.path = cfg.config.get("path", None)
                 self.namespace.apitoken = cfg.config.get("apitoken", None)
+                ssl = cfg.config.get("ssl", None)
+                if ssl is not None:
+                    self.namespace.ssl = ssl
             except:
                 pass
 
@@ -63,6 +68,11 @@ class ConfigModule(BaseModule):
 
         if self.namespace.apitoken is not None:
             args['apitoken'] = self.namespace.apitoken
+
+        if self.namespace.ssl:
+            args['ssl'] = "yes"
+        else:
+            args['ssl'] = "no"
 
         if self.namespace.batch:
             if len(args) != 3:
