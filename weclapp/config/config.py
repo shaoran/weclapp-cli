@@ -46,7 +46,7 @@ class Config(object):
 
         Valid kwargs can be determined by executing
 
-            from weclapp import Config 
+            from weclapp import Config
             print(Config.config_values)
 
         from the python console
@@ -87,3 +87,9 @@ class Config(object):
             config[key] = newval
 
         return config
+
+    def set_new_config(self, config):
+        self.config = config
+
+    def save(self):
+        pass
