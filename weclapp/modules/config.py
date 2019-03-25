@@ -1,4 +1,5 @@
 import sys
+import yaml
 
 from .base import BaseModule
 from ..config import Config
@@ -22,6 +23,8 @@ class ConfigModule(BaseModule):
     @staticmethod
     def init_argparser(parser):
         def_path = '/webapp/api/v1'
+        parser.add_argument('-l', '--list', action='store_true', default=False, dest='list',
+                help='Show the stored configuration. Batch mode is ignore in this case')
         parser.add_argument('-b', '--batch-mode', action='store_true', default=False, dest='batch',
                 help='Batch mode, disables interactive mode. Interactive mode is enabled by default')
         parser.add_argument('-d', '--domain', action='store', dest='domain', metavar='DOMAIN',
@@ -34,6 +37,9 @@ class ConfigModule(BaseModule):
 
 
     def run(self):
+        if self.namespace.list:
+            return self.list_config()
+
         if not self.namespace.batch:
             print('Generating a new configuration file %s' % self.namespace.config)
 
@@ -62,4 +68,11 @@ class ConfigModule(BaseModule):
         cfg.set_new_config(newcfg)
 
         cfg.save()
+        return 0
+
+    def list_config(self):
+        cfg = Config(path=self.namespace.config)
+
+        cfg.parse()
+        yaml.dump(cfg.config, sys.stdout)
         return 0
