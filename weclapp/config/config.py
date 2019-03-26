@@ -22,6 +22,24 @@ class Config(object):
         self.path = path
         self.config = None
 
+    def validate(self):
+        """
+        Validates the config
+        """
+
+        if self.config is None or (not isinstance(self.config, dict)):
+            return False
+
+        for key, _, _, klass in self.config_values:
+            if key not in self.config:
+                return False
+            val = self.config[key]
+
+            if not isinstance(val, klass):
+                return False
+
+        return True
+
     def parse(self):
         """
         Returns if the config file is parsed
@@ -35,6 +53,10 @@ class Config(object):
             self.config = yaml.load(fp, Loader=yaml.SafeLoader)
         except Exception as e:
             raise ConfigParsedFailed("Could not open config file: %s" % str(e), path=self.path)
+
+        if not self.validate():
+            raise ConfigInvalid('The parsed configuration is invalid')
+
 
 
     def interactive_config(self, verbose=True, **kwargs):

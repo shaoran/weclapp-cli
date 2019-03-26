@@ -41,5 +41,11 @@ class ConfigUnableToRead(ConfigError):
     """
     pass
 
+class ConfigInvalid(ConfigError):
+    """
+    Invalid config, either missing of cannot be parsed
+    """
+    pass
 
-__all__ = [ 'ConfigNotFound', 'ConfigCannotWrite', 'ConfigParsedFailed', 'ConfigUnableToRead' ]
+
+__all__ = [ 'ConfigNotFound', 'ConfigCannotWrite', 'ConfigParsedFailed', 'ConfigUnableToRead', 'ConfigInvalid' ]
