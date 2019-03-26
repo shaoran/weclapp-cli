@@ -1,5 +1,4 @@
 from .base import BaseModule
-from ..config import Config
 
 basehelp = 'Print information about the projects and tasks'
 
@@ -18,4 +17,5 @@ class ProjectModule(BaseModule):
 
 
     def run(self):
+        self.check_config()
         return 0
