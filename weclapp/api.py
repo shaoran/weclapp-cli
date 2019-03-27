@@ -146,4 +146,23 @@ class WeclappAPI(object):
         tasks_map = { i.id: i for i in tasks }
         time_records_map = { i.id: i for i in time_records }
 
-        return [projects, tasks, time_records]
+        tasks[0].add_time_record(time_records[0])
+        tasks[0].add_time_record(time_records[12])
+
+        for record in time_records:
+            if record.task_id not in tasks_map:
+                continue
+
+            task = tasks_map[record.task_id]
+            task.add_time_record(record)
+            record.task = task
+
+        for task in tasks:
+            if task.project_id not in projects_map:
+                continue
+
+            proj = projects_map[task.project_id]
+            proj.add_task(task)
+            task.project = proj
+
+        return projects
