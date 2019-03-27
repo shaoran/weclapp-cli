@@ -21,4 +21,4 @@ class WeclappTask(WeclappBaseModel):
             return
 
         self.time_records.append(record)
-        self.time_records = sorted(self.time_records, key=lambda r: r.startdate)
+        self.time_records = sorted(self.time_records, key=lambda r: r.startdate, reverse=True)
