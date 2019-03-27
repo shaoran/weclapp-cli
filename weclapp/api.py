@@ -142,4 +142,8 @@ class WeclappAPI(object):
         tasks = self.fetch_project_tasks()
         time_records = self.fetch_time_records()
 
+        projects_map = { i.id: i for i in projects }
+        tasks_map = { i.id: i for i in tasks }
+        time_records_map = { i.id: i for i in time_records }
+
         return [projects, tasks, time_records]
