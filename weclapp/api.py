@@ -106,3 +106,26 @@ class WeclappAPI(object):
         res = self.call('project', 'GET')
 
         return [ WeclappProject(**p) for p in res['result'] ]
+
+    def fetch_project_tasks(self):
+        """
+        Fetches the tasks only, without time records (activities)
+        """
+        # avoid circular dependencies when loading the modul
+        from .models import WeclappTask
+
+        res = self.call('projectTask', 'GET')
+
+        return [ WeclappTask(**p) for p in res['result'] ]
+
+
+    def fetch_time_records(self):
+        """
+        Fetches the time records (activities)
+        """
+        # avoid circular dependencies when loading the modul
+        from .models import WeclappTimeRecord
+
+        res = self.call('timeRecord', 'GET')
+
+        return [ WeclappTimeRecord(**p) for p in res['result'] ]
