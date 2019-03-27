@@ -35,7 +35,7 @@ class WeclappAPI(object):
 
         return '/'.join(n)
 
-    def exec(self, command, method, query = {}, body = None):
+    def call(self, command, method, query = {}, body = None):
         """
         Make an API call
         """
@@ -94,3 +94,11 @@ class WeclappAPI(object):
                 raise WeclappError('Unable to get JSON response: %s' % str(e))
 
         return data
+
+    def fetch_projects(self):
+        # avoid circular dependencies when loading the modul
+        from .models import WeclappProject
+
+        res = self.call('project', 'GET')
+
+        return [ WeclappProject(**p) for p in res['result'] ]
