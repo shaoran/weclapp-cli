@@ -20,6 +20,16 @@ class WeclappBaseModel(object):
 
             setattr(self, mfield, val)
 
+        self.setup(**kwargs)
+
+    def setup(self, **kwargs):
+        """
+        Called during initialization. Override this function if
+        further initialization is required (for example to convert
+        dates from unix timestamps)
+        """
+        pass
+
 
     def todict(self):
         ret = {}
