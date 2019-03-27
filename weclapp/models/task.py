@@ -9,9 +9,9 @@ class WeclappTask(WeclappBaseModel):
         ('project_id', 'projectId', str),
     ]
 
-    project = None
-
-    time_records = []
+    def setup(self, **kwargs):
+        self.time_records = []
+        self.project = None
 
     def add_time_record(self, record):
 

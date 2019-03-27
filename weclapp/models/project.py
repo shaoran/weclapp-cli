@@ -9,7 +9,8 @@ class WeclappProject(WeclappBaseModel):
         ('billable', 'billable', bool),
     ]
 
-    tasks = []
+    def setup(self, **kwargs):
+        self.tasks = []
 
     def add_task(self, task):
 
