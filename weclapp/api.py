@@ -129,3 +129,17 @@ class WeclappAPI(object):
         res = self.call('timeRecord', 'GET')
 
         return [ WeclappTimeRecord(**p) for p in res['result'] ]
+
+
+    def load_projects(self, cache=True):
+        """
+        Loads all projects, tasks and time records and associate tasks and
+        time records with the projects
+
+        If cache is set to True, then the result will be cached
+        """
+        projects = self.fetch_projects()
+        tasks = self.fetch_project_tasks()
+        time_records = self.fetch_time_records()
+
+        return [projects, tasks, time_records]
