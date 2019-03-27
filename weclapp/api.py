@@ -96,6 +96,10 @@ class WeclappAPI(object):
         return data
 
     def fetch_projects(self):
+        """
+        Fetches the projects only, without tasks and without
+        time records (activities)
+        """
         # avoid circular dependencies when loading the modul
         from .models import WeclappProject
 
