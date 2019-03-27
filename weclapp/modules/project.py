@@ -1,4 +1,5 @@
 from .base import BaseModule
+from ..api import WeclappAPI
 
 basehelp = 'Print information about the projects and tasks'
 
@@ -18,4 +19,15 @@ class ProjectModule(BaseModule):
 
     def run(self):
         self.check_config()
+
+        api = WeclappAPI(self.config)
+        projects = api.load_projects()
+        for proj in projects:
+            print('%s [%s] %s' % (proj.id, proj.projnr, proj.name))
+            for task in proj.tasks:
+                print('  %s %s' % (task.id, task.name))
+                for record in task.time_records:
+                    print('    %.2f h %s' % (record.duration / 3600, record.startdate))
+
+            print()
         return 0
