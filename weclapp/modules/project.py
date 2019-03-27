@@ -3,7 +3,7 @@ from .base import BaseModule
 basehelp = 'Print information about the projects and tasks'
 
 class ProjectModule(BaseModule):
-    name = 'project'
+    name = 'projects'
     cmdline_opts = {
         'help': basehelp,
         'description': basehelp,
