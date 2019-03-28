@@ -15,7 +15,7 @@ class WeclappBaseModel(object):
 
             val = kwargs[pfield]
 
-            if not isinstance(val, klass):
+            if val is not None and not isinstance(val, klass):
                 raise ModelInvalidField('%s: The field \'%s\' is not of type \'%s\'' % (self.__model__, pfield, klass.__name__))
 
             setattr(self, mfield, val)
