@@ -35,7 +35,7 @@ class WeclappAPI(object):
 
         return '/'.join(n)
 
-    def call(self, command, method, query = {}, body = None):
+    def call(self, command, method, query = {}, body = None, expected_status_code = 200):
         """
         Make an API call
         """
@@ -63,7 +63,7 @@ class WeclappAPI(object):
             raise WeclappError('Unable to make the API call: %s' % str(e))
 
         data = None
-        if resp.status != 200:
+        if resp.status != expected_status_code:
             try:
                 data = resp.read()
             except:
