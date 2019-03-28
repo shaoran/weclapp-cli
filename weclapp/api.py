@@ -52,6 +52,9 @@ class WeclappAPI(object):
             "AuthenticationToken": self.config['apitoken'],
         }
 
+        if params != '':
+            url = "%s?%s" % (url, params)
+
         conn = klass(self.config['domain'])
         try:
             conn.request(method, url, headers=headers, body=body)
