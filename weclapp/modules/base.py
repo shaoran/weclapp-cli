@@ -8,11 +8,12 @@ class BaseModule(object):
 
     name = 'base'
     cmdline_opts = {}
+    autoload_api = True
 
-    def __init__(self, app, namespace):
+    def __init__(self, app, namespace, config):
         self.app = app
         self.namespace = namespace
-        self.config = None
+        self.config = config
 
     @staticmethod
     def init_argparser(parser):
@@ -20,12 +21,3 @@ class BaseModule(object):
 
     def run(self, namespace):
         raise Exception('The run method has to be overriden')
-
-    def check_config(self):
-        cfg = Config(path=self.namespace.config)
-        try:
-            cfg.parse()
-        except WeclappBaseException:
-            raise ConfigInvalid('Invalid configuration. Please execute \'weclapp-cli config\' to create a new configuration')
-
-        self.config = cfg.config

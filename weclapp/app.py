@@ -2,9 +2,11 @@ import sys
 
 from argparse import ArgumentParser
 
-from .config.config import def_config
-
+from .config.config import def_config, Config
 from .modules import ConfigModule, ProjectModule
+from .api import WeclappAPI
+from . import ConfigInvalid, WeclappBaseException
+from .models.base import WeclappBaseModel
 
 modules = [
     ConfigModule,
@@ -42,4 +44,13 @@ class WeclappApp(object):
             self.parser.print_help(file=sys.stderr)
             return 1
 
-        return namespace.module(self, namespace).run()
+        cfg = Config(path=namespace.config)
+        try:
+            cfg.parse()
+        except WeclappBaseException:
+            raise ConfigInvalid('Invalid configuration. Please execute \'weclapp-cli config\' to create a new configuration')
+
+        if namespace.module.autoload_api:
+            WeclappBaseModel.api = WeclappAPI(cfg.config)
+
+        return namespace.module(self, namespace, cfg.config).run()

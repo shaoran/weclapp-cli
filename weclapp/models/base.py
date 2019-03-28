@@ -8,6 +8,8 @@ class WeclappBaseModel(object):
         # (model field, public api field, type)
     ]
 
+    api = None
+
     def __init__(self, **kwargs):
         for mfield, pfield, klass in self.__fields__:
             if pfield not in kwargs:

@@ -19,6 +19,7 @@ class ConfigModule(BaseModule):
         mode you don't need to pass any parameter.
         """ % basehelp,
     }
+    autoload_api = False
 
     @staticmethod
     def init_argparser(parser):
