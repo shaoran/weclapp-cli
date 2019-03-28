@@ -28,7 +28,7 @@ class ProjectModule(BaseModule):
                 print('  %s %s' % (task.id, task.name))
                 total = 0
                 for record in task.time_records:
-                    print('    %.2f h %s (created=%s, lastmodif=%s)' % (record.duration / 3600, record.startdate, record.created, record.lastmodif))
+                    print('    %s %.2f h desc="%s"' % (record.id, record.duration / 3600, record.description))
                     total = total + record.duration
 
                 print('    Total time: %.2f h' % (total / 3600))
