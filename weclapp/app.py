@@ -51,6 +51,6 @@ class WeclappApp(object):
             raise ConfigInvalid('Invalid configuration. Please execute \'weclapp-cli config\' to create a new configuration')
 
         if namespace.module.autoload_api:
-            WeclappBaseModel.api = WeclappAPI(cfg.config)
+            WeclappBaseModel.__api__ = WeclappAPI(cfg.config)
 
         return namespace.module(self, namespace, cfg.config).run()

@@ -8,7 +8,7 @@ class WeclappBaseModel(object):
         # (model field, public api field, type)
     ]
 
-    api = None
+    __api__ = None
 
     def __init__(self, **kwargs):
         for mfield, pfield, klass in self.__fields__:
