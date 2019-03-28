@@ -14,6 +14,7 @@ class WeclappTimeRecord(WeclappBaseModel):
         ('created', 'createdDate', int),
         ('lastmodif', 'lastModifiedDate', int),
         ('startdate', 'startDate', int),
+        ('description', 'description', str),
     ]
 
     def setup(self, **kwargs):
@@ -23,3 +24,5 @@ class WeclappTimeRecord(WeclappBaseModel):
         self.created = datetime.fromtimestamp(int(self.created) // 1000)
         self.lastmodif = datetime.fromtimestamp(int(self.lastmodif) // 1000)
         self.startdate = datetime.fromtimestamp(int(self.startdate) // 1000)
+        if self.description is None:
+            self.description = ''
