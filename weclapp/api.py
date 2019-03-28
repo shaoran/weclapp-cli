@@ -129,7 +129,7 @@ class WeclappAPI(object):
         # avoid circular dependencies when loading the modul
         from .models import WeclappTimeRecord
 
-        res = self.call('timeRecord', 'GET')
+        res = self.call('timeRecord', 'GET', query={'serializeNulls': 1})
 
         return [ WeclappTimeRecord(**p) for p in res['result'] ]
 
