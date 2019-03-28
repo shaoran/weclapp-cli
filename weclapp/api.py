@@ -55,6 +55,9 @@ class WeclappAPI(object):
         if params != '':
             url = "%s?%s" % (url, params)
 
+        if method in [ 'POST', 'PUT' ]:
+            headers['Content-Type'] = 'application/json'
+
         conn = klass(self.config['domain'])
         try:
             conn.request(method, url, headers=headers, body=body)
