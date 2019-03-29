@@ -1,4 +1,5 @@
 import sys
+import coloredlogs, logging
 
 from argparse import ArgumentParser
 
@@ -13,6 +14,9 @@ modules = [
     ProjectModule
 ]
 
+
+log = logging.getLogger("weclapp-cli")
+
 class WeclappApp(object):
     """
     A container class of modules which boots the app
@@ -23,6 +27,9 @@ class WeclappApp(object):
 
         parser.add_argument('-c', '--config', action='store', default=def_config, metavar='FILE',
                 help='Sets the path of configuration file. Default %s' % def_config)
+
+        parser.add_argument('-d', '--debug', action='store_true', default=False,
+                help='Enable debug output')
 
         subparser = parser.add_subparsers(title="COMMANDS", description='weclapp-cli commands',
                 help='Pass -h after the command to get additional help for the command')
@@ -43,6 +50,10 @@ class WeclappApp(object):
             print('COMMAND not specified\n---------------------\n', file=sys.stderr)
             self.parser.print_help(file=sys.stderr)
             return 1
+
+        if namespace.debug:
+            coloredlogs.install(level='DEBUG')
+            logging.basicConfig(level=logging.DEBUG)
 
         cfg = Config(path=namespace.config)
         try:

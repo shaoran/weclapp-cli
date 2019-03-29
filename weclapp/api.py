@@ -2,8 +2,11 @@ import http.client
 import urllib.parse
 import copy
 import json
+import logging
 
 from . import WeclappBaseException
+
+log = logging.getLogger("weclapp-cli")
 
 class WeclappError(WeclappBaseException):
     pass
@@ -58,12 +61,15 @@ class WeclappAPI(object):
         if method in [ 'POST', 'PUT' ]:
             headers['Content-Type'] = 'application/json'
 
+        log.debug('HTTP %s %s', method, url)
         conn = klass(self.config['domain'])
         try:
             conn.request(method, url, headers=headers, body=body)
             resp = conn.getresponse()
         except Exception as e:
             raise WeclappError('Unable to make the API call: %s' % str(e))
+
+        log.debug('HTTP call returned: %s', resp.status)
 
         data = None
         if resp.status != expected_status_code:
