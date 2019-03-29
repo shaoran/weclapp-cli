@@ -11,5 +11,17 @@ class ModelInvalidField(WeclappModelBaseException):
     """
     pass
 
+class ApiNotLoaded(WeclappModelBaseException):
+    """
+    Raised when the api is not loaded
+    """
+    pass
 
-__all__ = [ 'ModelInvalidField' ]
+class WrongFetchCommand(WeclappModelBaseException):
+    """
+    Raised when the model class has a wrong fetch command
+    """
+    pass
+
+
+__all__ = [ 'ModelInvalidField', 'ApiNotLoaded', 'WrongFetchCommand' ]
