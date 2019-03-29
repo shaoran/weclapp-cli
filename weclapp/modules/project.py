@@ -61,6 +61,10 @@ class ProjectModule(BaseModule):
 
         self.mark_all_to_show(projects)
 
+        query = self.namespace.query.strip()
+        if query != '':
+            filter_query(projects, query)
+
         if not self.namespace.projects_only and not self.namespace.projects_and_tasks:
             self.hide_if_no_time_records(projects)
 
@@ -109,3 +113,57 @@ class ProjectModule(BaseModule):
             # show project if at least one task has hide == False
             if any(map(lambda tt: not tt.hide, proj.tasks)):
                 proj.hide = False
+
+def unmask_tasks(project):
+    for task in project.tasks:
+        task.hide = False
+
+def filter_query(projects, query):
+    for proj in projects:
+        if match_project(proj, query):
+            proj.hide = False
+            unmask_tasks(proj)
+            continue
+
+        proj.tasks = list(filter(lambda t: match_task(t, query), proj.tasks))
+
+        unmask_tasks(proj)
+
+        proj.hide = True
+
+        if len(proj.tasks) > 0:
+            proj.hide = False
+
+
+def match_task(task, query):
+    query = query.lower()
+    name = task.name.lower()
+    try:
+        name.index(query)
+    except ValueError:
+        return False
+
+    return True
+
+def match_project(project, query):
+    query = query.lower()
+    name = project.name.lower()
+    projnr = project.projnr.lower()
+
+    f = False
+
+    try:
+        name.index(query)
+        f = True
+    except ValueError:
+        pass
+
+    if f:
+        return True
+
+    try:
+        projnr.index(query)
+    except ValueError:
+        return False
+
+    return True
