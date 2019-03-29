@@ -8,6 +8,7 @@ class WeclappProject(WeclappBaseModel):
         ('projnr', 'projectNumber', str),
         ('billable', 'billable', bool),
     ]
+    __fetch_command__ = 'project'
 
     def setup(self, **kwargs):
         self.tasks = []

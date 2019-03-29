@@ -8,6 +8,7 @@ class WeclappTask(WeclappBaseModel):
         ('name', 'name', str),
         ('project_id', 'projectId', str),
     ]
+    __fetch_command__ = 'projectTask'
 
     def setup(self, **kwargs):
         self.time_records = []

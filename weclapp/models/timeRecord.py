@@ -16,6 +16,7 @@ class WeclappTimeRecord(WeclappBaseModel):
         ('startdate', 'startDate', int),
         ('description', 'description', str),
     ]
+    __fetch_command__ = 'timeRecord'
 
     def setup(self, **kwargs):
         self.task = None

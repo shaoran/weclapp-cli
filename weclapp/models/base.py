@@ -1,3 +1,5 @@
+import math
+
 from .exceptions import *
 
 class WeclappBaseModel(object):
@@ -9,6 +11,9 @@ class WeclappBaseModel(object):
     ]
 
     __api__ = None
+    __fetch_command__ = None
+    __expect_status_code__ = 200
+    __method__ = 'GET'
 
     def __init__(self, **kwargs):
         for mfield, pfield, klass in self.__fields__:
@@ -46,3 +51,59 @@ class WeclappBaseModel(object):
 
     def __repr__(self):
         return str(self)
+
+
+    @classmethod
+    def load(cls, sort=None, pageSize=100, serializeNulls=True):
+        """
+        Fetches the data from the public API
+
+        params:
+
+            sort           the sort parameters
+            pageSize       number of elements
+            serializeNulls serialize NULL entries
+
+        See https://www.weclapp.com/api2/ for a better understanding
+        of these parameters
+
+        If you pass pageSize=-1, then it will fetch all elements
+
+        pageSize is capped at 500
+        """
+        if cls.__api__ is None:
+            raise ApiNotLoaded('The API is not loaded, cannot fetch the data')
+
+        if cls.__fetch_command__ is None:
+            raise WrongFetchCommand('This class (%s) has no valid fetch command' % cls.__name__)
+
+        if pageSize > 500:
+            pageSize = 500
+
+        num_of_pages = 1
+
+        if pageSize == -1:
+            api = cls.__api__.call('%s/count' % cls.__fetch_command__, 'GET')
+            length = api['result']
+            num_of_pages = math.ceil(length / 500)
+            pageSize = 500
+
+        res = []
+        for i in range(num_of_pages):
+            query = {
+                'page': i+1,
+            }
+            if sort:
+                query['sort'] = sort
+
+            query['pageSize'] = pageSize
+
+            if serializeNulls:
+                query['serializeNulls'] = 1
+
+            data = cls.__api__.call(cls.__fetch_command__, cls.__method__, query=query,
+                    expected_status_code=cls.__expect_status_code__)
+
+            res += [ cls(**p) for p in data['result'] ]
+
+        return res
