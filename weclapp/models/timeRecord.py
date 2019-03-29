@@ -27,3 +27,5 @@ class WeclappTimeRecord(WeclappBaseModel):
         self.startdate = datetime.fromtimestamp(int(self.startdate) // 1000)
         if self.description is None:
             self.description = ''
+
+        self.description = self.description.strip()
