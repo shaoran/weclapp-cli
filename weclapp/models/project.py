@@ -27,7 +27,7 @@ class WeclappProject(WeclappBaseModel):
         self.tasks.append(task)
 
     @classmethod
-    def load(cls, tasks=True, time_records=100):
+    def load(cls, tasks=True, time_records=100, **kwargs):
         """
         Loads projects
 
@@ -36,10 +36,11 @@ class WeclappProject(WeclappBaseModel):
             tasks         if set, load the project tasks and bind them to the projects
             time_records  load the last n time records. If n is -1, then load all time
                           records. If tasks is not set, this setting is ignored
+            kwargs        arguments accepted by the base class
         """
         from .task import WeclappTask             # avoiding circle dependencies
         from .timeRecord import WeclappTimeRecord # avoiding circle dependencies
-        projects = super().load()
+        projects = super().load(**kwargs)
 
         if not tasks:
             return projects
