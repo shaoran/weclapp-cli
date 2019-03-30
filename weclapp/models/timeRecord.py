@@ -20,8 +20,6 @@ class WeclappTimeRecord(WeclappBaseModel):
 
     def setup(self, **kwargs):
         self.task = None
-
-    def setup(self, **kwargs):
         self.created = datetime.fromtimestamp(int(self.created) // 1000)
         self.lastmodif = datetime.fromtimestamp(int(self.lastmodif) // 1000)
         self.startdate = datetime.fromtimestamp(int(self.startdate) // 1000)
