@@ -98,7 +98,9 @@ class ProjectModule(BaseModule):
                     if hours == 1:
                         plural = ''
 
-                    msg = '    {:22s}{:.2f} hour{:5s}{:10s}'
+                    hours = '{:.2f}'.format(hours)
+
+                    msg = '    {:22s}{:5s} hour{:4s}{:10s}'
                     print(msg.format(str(record.startdate), hours, plural, desc))
                     total = total + record.duration
 
