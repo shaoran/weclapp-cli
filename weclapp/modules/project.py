@@ -1,4 +1,5 @@
 from argparse import RawTextHelpFormatter
+from colorama import Fore, Back, Style
 
 from .base import BaseModule
 from ..models import WeclappProject
@@ -72,19 +73,41 @@ class ProjectModule(BaseModule):
             if proj.hide:
                 continue
 
-            print('%s [%s] %s' % (proj.id, proj.projnr, proj.name))
+            msg = Style.BRIGHT + '{:10s}{:30s}[ID: {}] Billable: {}' + Style.RESET_ALL
+
+            billable = Fore.RED + 'no'
+            if proj.billable:
+                billable = Fore.GREEN + 'yes'
+
+            print(msg.format(proj.projnr, proj.name, proj.id, billable))
+
             for task in proj.tasks:
                 if task.hide:
                     continue
 
-                print('  %s %s' % (task.id, task.name))
+                msg = Style.BRIGHT + Fore.BLUE + '  {:38s}[ID: {}]' + Style.RESET_ALL
+                print(msg.format(task.name, task.id))
                 total = 0
                 for record in task.time_records:
-                    print('    %s %.2f h %s desc="%s"' % (record.id, record.duration / 3600, record.startdate, record.description))
+                    desc = ''
+                    if record.description != '':
+                        desc = record.description
+
+                    hours = record.duration / 3600
+                    plural = 's'
+                    if hours == 1:
+                        plural = ''
+
+                    msg = '    {:22s}{:.2f} hour{:5s}{:10s}'
+                    print(msg.format(str(record.startdate), hours, plural, desc))
                     total = total + record.duration
 
                 if total != 0:
-                    print('    Total time: %.2f h' % (total / 3600))
+                    hours = total / 3600
+                    time = "hours"
+                    if hours == 1:
+                        time = "hour"
+                    print((Style.BRIGHT + '    Total time: %.2f %s' % (hours, time)) + Style.RESET_ALL)
         return 0
 
     def mark_all_to_show(self, projects):
