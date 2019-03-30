@@ -35,6 +35,9 @@ class ProjectModule(BaseModule):
 
         parser.add_argument('-q', '--query', action='store', default='', dest='query', metavar='QUERY',
                 help='Filter projects and tasks by query.\nDisplays the projects & tasks that contains the query.')
+
+        parser.add_argument('--no-color', action='store_true', default=False, dest='nocolor',
+                help='Disable colored output')
         parser.set_defaults(module = ProjectModule)
 
 
@@ -69,15 +72,27 @@ class ProjectModule(BaseModule):
         if not self.namespace.projects_only and not self.namespace.projects_and_tasks:
             self.hide_if_no_time_records(projects)
 
+        with_color = not self.namespace.nocolor
+
         for proj in projects:
             if proj.hide:
                 continue
 
-            msg = Style.BRIGHT + '{:10s}{:30s}[ID: {}] Billable: {}' + Style.RESET_ALL
+            msg = '{:10s}{:30s}[ID: {}] Billable: {}'
+            if with_color:
+                msg = Style.BRIGHT + msg + Style.RESET_ALL
 
-            billable = Fore.RED + 'no'
+            bill_color = ''
+            if with_color:
+                bill_color = Fore.RED
+            bill_text = 'no'
+
             if proj.billable:
-                billable = Fore.GREEN + 'yes'
+                bill_text = 'yes'
+                if with_color:
+                    bill_color = Fore.GREEN
+
+            billable = bill_color + bill_text
 
             print(msg.format(proj.projnr, proj.name, proj.id, billable))
 
@@ -85,7 +100,9 @@ class ProjectModule(BaseModule):
                 if task.hide:
                     continue
 
-                msg = Style.BRIGHT + Fore.BLUE + '  {:38s}[ID: {}]' + Style.RESET_ALL
+                msg = '  {:38s}[ID: {}]'
+                if with_color:
+                    msg = Style.BRIGHT + Fore.BLUE + msg + Style.RESET_ALL
                 print(msg.format(task.name, task.id))
                 total = 0
                 for record in task.time_records:
@@ -109,7 +126,10 @@ class ProjectModule(BaseModule):
                     time = "hours"
                     if hours == 1:
                         time = "hour"
-                    print((Style.BRIGHT + '    Total time: %.2f %s' % (hours, time)) + Style.RESET_ALL)
+                    msg = '    Total time: %.2f %s' % (hours, time)
+                    if with_color:
+                        msg = Style.BRIGHT + msg + Style.RESET_ALL
+                    print(msg)
         return 0
 
     def mark_all_to_show(self, projects):
