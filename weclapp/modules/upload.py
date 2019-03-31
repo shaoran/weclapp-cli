@@ -20,6 +20,16 @@ class UploadModule(BaseModule):
 
     @staticmethod
     def init_argparser(parser):
+        parser.add_argument('-p', '--parser', action='store', dest='parser', metavar='PARSER',
+                help='Set the parser to be used. Use --list to get the list of parsers.')
+        parser.add_argument('-l', '--list', action='store_true', dest='list', default=False,
+                help='List all parsers. The first parser in the list is the default one')
+        parser.add_argument('files', action='store', metavar='FILE', nargs='+',
+                help='The CSV file to be parsed')
+        parser.add_argument('--project-id', action='store', metavar='PROJECT ID', dest='project_id',
+                help='The default project id, used by parser if no project id was found in the parsed file')
+        parser.add_argument('--task-id', action='store', metavar='TASK ID', dest='task_id',
+                help='The default task id, used by parser if no task id was found in the parsed file')
         parser.set_defaults(module = UploadModule)
 
     def run(self):
