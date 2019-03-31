@@ -10,5 +10,11 @@ class InvalidCLIArguments(WeclappModuleBaseException):
     """
     pass
 
-__all__ = [ 'InvalidCLIArguments' ]
+class ParserNotFound(WeclappBaseException):
+    """
+    Raised when the parser is not found
+    """
+    pass
+
+__all__ = [ 'InvalidCLIArguments', 'ParserNotFound' ]
 
