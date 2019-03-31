@@ -1,4 +1,6 @@
 from .base import BaseModule
+from ..parser import CSVParser, add_parser
+from ..parser.manage import parsers as weclapp_parsers
 
 basehelp = 'Upload time records'
 
@@ -14,4 +16,5 @@ class UploadModule(BaseModule):
         parser.set_defaults(module = UploadModule)
 
     def run(self):
+        add_parser('csv', CSVParser, default=True)
         return 0
