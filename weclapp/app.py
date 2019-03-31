@@ -4,14 +4,15 @@ import coloredlogs, logging
 from argparse import ArgumentParser
 
 from .config.config import def_config, Config
-from .modules import ConfigModule, ProjectModule
+from .modules import ConfigModule, ProjectModule, UploadModule
 from .api import WeclappAPI
 from . import ConfigInvalid, WeclappBaseException
 from .models.base import WeclappBaseModel
 
 modules = [
     ConfigModule,
-    ProjectModule
+    ProjectModule,
+    UploadModule,
 ]
 
 
