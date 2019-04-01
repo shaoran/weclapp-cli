@@ -24,7 +24,7 @@ setup(name='weclapp-cli',
     keywords='weclapp time records uploader',
     packages=find_packages(),
     python_requires='>=3',
-    install_requires=['PyYAML', 'colorama', 'coloredlogs'],
+    install_requires=['PyYAML', 'colorama', 'coloredlogs', 'python-dateutil'],
     entry_points={
         'console_scripts': [
             'weclapp-cli = weclapp.bin.weclapp:main'
