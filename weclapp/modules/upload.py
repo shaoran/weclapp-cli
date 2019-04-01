@@ -27,12 +27,6 @@ class UploadModule(BaseModule):
                 help='List all parsers. The first parser in the list is the default one')
         parser.add_argument('files', action='store', metavar='FILE', nargs='*',
                 help='The CSV file to be parsed')
-        parser.add_argument('--project-id', action='store', metavar='PROJECT ID', dest='project_id',
-                help='The default project id, used by parser if no project id was found in the parsed file')
-        parser.add_argument('--task-id', action='store', metavar='TASK ID', dest='task_id',
-                help='The default task id, used by parser if no task id was found in the parsed file')
-        parser.add_argument('--start-time', action='store', metavar='HH:MM[:SS]', dest='starttime',
-                help='The default start time, used by parser if no start time is found in the parsed file')
         parser.add_argument('--list-parser-options', action='store_true', default=False, dest='list_parser_opts',
                 help='Show the parser options. Use --parser to set the parser, otherwise the default one is shown')
         parser.add_argument('--parser-options', action='store', metavar='OPTIONS', default='', dest='parser_opts',
