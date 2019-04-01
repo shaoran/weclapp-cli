@@ -37,8 +37,8 @@ class Parser(object):
 
         def_opts = { o[0]: o[1] for o in type(self).__options__ }
         def_opts.update(options)
-        self.options = Namespace(def_opts)
-        self.setup(fps)
+        self.options = Namespace(**def_opts)
+        self.setup()
 
     def setup(self):
         """
