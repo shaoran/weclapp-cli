@@ -16,4 +16,10 @@ class ParserNameNotUnique(WeclappParserBaseException):
     """
     pass
 
-__all__ = [ 'ParserInvalidType', 'ParserNameNotUnique' ]
+class FailedToParse(WeclappParserBaseException):
+    """
+    Raised when the parser cannot parse a file
+    """
+    pass
+
+__all__ = [ 'ParserInvalidType', 'ParserNameNotUnique', 'FailedToParse' ]
