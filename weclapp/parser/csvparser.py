@@ -17,7 +17,10 @@ class CSVParser(Parser):
     weclapp project number and the project task.
 
     The date column and the time columns are mandatory. The description column
-    may be empty.
+    may be empty. The date column is parsed with dateutils.parser.parse function.
+    If this function parses successfully the date, then this date is used. Please
+    take a look at https://dateutil.readthedocs.io/en/stable/parser.html for more
+    information about the different strings that are parsed by this function.
 
     In the description don't use the character used for separation, this parser
     does not support escaped strings.
