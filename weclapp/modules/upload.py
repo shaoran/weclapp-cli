@@ -2,8 +2,9 @@ import sys
 import os
 import logging
 
+from ..parser.exceptions import FailedToParse
 from .exceptions import ParserNotFound
-from ..exception import WeclappBaseException
+from ..exception import WeclappBaseException, PrintHelp
 from .base import BaseModule
 from ..parser import CSVParser, add_parser
 from ..parser.manage import parsers as weclapp_parsers
@@ -51,9 +52,41 @@ class UploadModule(BaseModule):
             except:
                 raise ParserNotFound('There is no parser \'%s\'' % self.namespace.parser)
 
-            parser = weclapp_parsers[idx]['parser']
+            parser = weclapp_parsers[idx]
 
+        if self.namespace.list_parser_opts:
+            fmt = '{:15s}{:15s}{}'
+            print('Parser: %s\n' % parser['name'])
+            print(fmt.format('KEY', 'VALUE', 'DESCRIPTION'))
+            for _ in range(40):
+                print('-', end='')
+            print('-')
+
+            for key,val,desc in parser['parser'].__options__:
+                print(fmt.format(key, val, desc))
+
+            print('\n')
+            print('use --po "KEY:VAL" to set an option. You can use --po multiple times')
+            return 0
+
+        if len(self.namespace.files) == 0:
+            raise PrintHelp('No CSV files passed')
+
+        parser_opts = parser['parser'].parse_parse_options(self.namespace.po or {})
+
+        csv_parser = parser['parser'](options=parser_opts)
+
+        time_records = []
+
+        for fn in self.namespace.files:
+            time_records += self.parseFile(csv_parser, fn)
+
+        print(time_records)
         return 0
+
+    def parseFile(self, csv_parser, filename):
+        return csv_parser.parseFile(filename)
+
 
 
 def init_parsers(config, fn='csv_exporter.py'):
