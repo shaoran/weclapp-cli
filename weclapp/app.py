@@ -8,6 +8,7 @@ from .modules import ConfigModule, ProjectModule, UploadModule
 from .api import WeclappAPI
 from . import ConfigInvalid, WeclappBaseException
 from .models.base import WeclappBaseModel
+from .exception import PrintHelp
 
 modules = [
     ConfigModule,
@@ -65,4 +66,9 @@ class WeclappApp(object):
         if namespace.module.autoload_api:
             WeclappBaseModel.__api__ = WeclappAPI(cfg.config)
 
-        return namespace.module(self, namespace, cfg.config).run()
+        try:
+            return namespace.module(self, namespace, cfg.config).run()
+        except PrintHelp as e:
+            print('%s\n----------------------------' % str(e), file=sys.stderr)
+            self.parser.print_help(file=sys.stderr)
+            return 1
