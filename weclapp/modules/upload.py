@@ -25,7 +25,7 @@ class UploadModule(BaseModule):
                 help='Set the parser to be used. Use --list to get the list of parsers.')
         parser.add_argument('-l', '--list', action='store_true', dest='list', default=False,
                 help='List all parsers. The first parser in the list is the default one')
-        parser.add_argument('files', action='store', metavar='FILE', nargs='+',
+        parser.add_argument('files', action='store', metavar='FILE', nargs='*',
                 help='The CSV file to be parsed')
         parser.add_argument('--project-id', action='store', metavar='PROJECT ID', dest='project_id',
                 help='The default project id, used by parser if no project id was found in the parsed file')
