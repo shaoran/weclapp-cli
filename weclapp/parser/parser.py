@@ -78,3 +78,24 @@ class Parser(object):
             return open(filename_or_fp, **kwargs)
 
         return filename_or_fp
+
+
+    @classmethod
+    def parse_parse_options(cls, pos):
+        """
+        Parse parser options from argparse namespace
+        """
+        kwargs = {}
+
+        for po in pos:
+            try:
+                idx = po.index('=')
+            except:
+                raise InvalidParserOptionFormat('Parser argument %s has wrong format' % po)
+
+            key = po[0:idx].strip()
+            val = po[idx+1:].strip()
+
+            kwargs[key] = val
+
+        return kwargs
