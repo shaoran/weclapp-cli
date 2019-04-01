@@ -48,37 +48,19 @@ class Parser(object):
         """
         pass
 
-    def parseFile(self, filename_or_fp):
+    def parseFile(self, filename):
         """
         parse the file and return a weclapp.WeclappTimeRecord object.
 
         params:
 
-          filename_or_fp   a filename or a file pointer object
+          filename_or_fp   a filename
 
         If the file cannot be parsed, raise weclapp.FailedToParse
 
         Override this class in your parser implementation
         """
         pass
-
-
-    def get_fp(self, filename_or_fp, **kwargs):
-        """
-        Helper to get a file pointer from filename_or_fp
-
-        params:
-
-          filename_or_fp   a filename or a file pointer object
-          kwargs           the params to be passed to open() in
-                           case that filename_or_fp is a filename
-        """
-
-        if isinstance(filename_or_fp, str):
-            return open(filename_or_fp, **kwargs)
-
-        return filename_or_fp
-
 
     @classmethod
     def parse_parse_options(cls, pos):
