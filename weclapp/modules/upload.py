@@ -2,6 +2,7 @@ import sys
 import os
 import logging
 
+from .exceptions import ParserNotFound
 from ..exception import WeclappBaseException
 from .base import BaseModule
 from ..parser import CSVParser, add_parser
@@ -35,6 +36,20 @@ class UploadModule(BaseModule):
     def run(self):
         add_parser('csv', CSVParser, default=True)
         init_parsers(self.namespace.config)
+
+        if self.namespace.list:
+            for p in weclapp_parsers:
+                print(p['name'])
+            return 0
+
+        parser = weclapp_parsers[0]
+        if self.namespace.parser:
+            try:
+                idx = list(map(lambda x: x['name'], weclapp_parsers)).index(self.namespace.parser)
+            except:
+                raise ParserNotFound('There is no parser \'%s\'' % self.namespace.parser)
+
+            parser = weclapp_parsers[idx]['parser']
 
         return 0
 
