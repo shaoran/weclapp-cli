@@ -94,7 +94,7 @@ class ProjectModule(BaseModule):
 
             billable = bill_color + bill_text
 
-            print(msg.format(proj.projnr, proj.name, proj.id, billable))
+            print(msg.format(proj.projectNumber, proj.name, proj.id, billable))
 
             for task in proj.tasks:
                 if task.hide:
@@ -110,7 +110,7 @@ class ProjectModule(BaseModule):
                     if record.description != '':
                         desc = record.description
 
-                    hours = record.duration / 3600
+                    hours = record.durationSeconds / 3600
                     plural = 's'
                     if hours == 1:
                         plural = ''
@@ -118,8 +118,8 @@ class ProjectModule(BaseModule):
                     hours = '{:.2f}'.format(hours)
 
                     msg = '    {:22s}{:5s} hour{:4s}{:10s}'
-                    print(msg.format(str(record.startdate), hours, plural, desc))
-                    total = total + record.duration
+                    print(msg.format(str(record.startDate), hours, plural, desc))
+                    total = total + record.durationSeconds
 
                 if total != 0:
                     hours = total / 3600
@@ -193,7 +193,7 @@ def match_task(task, query):
 def match_project(project, query):
     query = query.lower()
     name = project.name.lower()
-    projnr = project.projnr.lower()
+    projectNumber = project.projectNumber.lower()
 
     f = False
 
@@ -207,7 +207,7 @@ def match_project(project, query):
         return True
 
     try:
-        projnr.index(query)
+        projectNumber.index(query)
     except ValueError:
         return False
 

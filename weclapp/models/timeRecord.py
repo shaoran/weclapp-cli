@@ -5,24 +5,31 @@ from datetime import datetime
 class WeclappTimeRecord(WeclappBaseModel):
     __model__ = 'WeclappTimeRecord'
     __fields__ = [
-        ('id', 'id', str),
-        ('billable', 'billable', bool),
-        ('project_id', 'projectId', str),
-        ('task_id', 'projectTaskId', str),
-        ('user_id', 'userId', str),
-        ('duration', 'durationSeconds', int),
-        ('created', 'createdDate', int),
-        ('lastmodif', 'lastModifiedDate', int),
-        ('startdate', 'startDate', int),
-        ('description', 'description', str),
+        ('id', str, True),
+        ('billable', bool, True),
+        ('projectId', str, False),
+        ('projectTaskId', str, False),
+        ('userId', str, True),
+        ('durationSeconds', int, False),
+        ('createdDate', int, True),
+        ('lastModifiedDate', int, True),
+        ('startDate', int, False),
+        ('description', str, True),
     ]
     __fetch_command__ = 'timeRecord'
 
     def setup(self, **kwargs):
         self.task = None
-        self.created = datetime.fromtimestamp(int(self.created) // 1000)
-        self.lastmodif = datetime.fromtimestamp(int(self.lastmodif) // 1000)
-        self.startdate = datetime.fromtimestamp(int(self.startdate) // 1000)
+
+        if self.createdDate:
+            self.createdDate = datetime.fromtimestamp(int(self.createdDate) // 1000)
+
+        if self.lastModifiedDate:
+            self.lastModifiedDate = datetime.fromtimestamp(int(self.lastModifiedDate) // 1000)
+
+        if self.startDate:
+            self.startDate = datetime.fromtimestamp(int(self.startDate) // 1000)
+
         if self.description is None:
             self.description = ''
 

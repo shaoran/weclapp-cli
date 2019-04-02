@@ -7,7 +7,7 @@ class WeclappBaseModel(object):
     __fields__ = [
         # every model should fill this variable
         # with the field needed
-        # (model field, public api field, type)
+        # (public api field, type, can_be_None)
     ]
 
     __api__ = None
@@ -16,16 +16,24 @@ class WeclappBaseModel(object):
     __method__ = 'GET'
 
     def __init__(self, **kwargs):
-        for mfield, pfield, klass in self.__fields__:
-            if pfield not in kwargs:
-                raise ModelInvalidField('%s: The field \'%s\' cannot be found in public API response' % (self.__model__, pfield))
+        for field, klass, can_be_None in self.__fields__:
+            val = kwargs.get(field, None)
+            if val is None:
+                if can_be_None:
+                    setattr(self, field, None)
+                    continue
+                else:
+                    raise ModelInvalidField('%s: The field \'%s\' cannot be found in public API response or is NULL' % (self.__model__, field))
 
-            val = kwargs[pfield]
+            try:
+                if not isinstance(val, klass):
+                    raise ModelInvalidField('%s: The field \'%s\' is not of type \'%s\'' % (self.__model__, field, klass.__name__))
+            except Exception as e:
+                import pudb
+                pudb.set_trace()
 
-            if val is not None and not isinstance(val, klass):
-                raise ModelInvalidField('%s: The field \'%s\' is not of type \'%s\'' % (self.__model__, pfield, klass.__name__))
 
-            setattr(self, mfield, val)
+            setattr(self, field, val)
 
         self.setup(**kwargs)
 

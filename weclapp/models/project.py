@@ -7,10 +7,10 @@ log = logging.getLogger("weclapp-cli")
 class WeclappProject(WeclappBaseModel):
     __model__ = 'WeclappProject'
     __fields__ = [
-        ('id', 'id', str),
-        ('name', 'name', str),
-        ('projnr', 'projectNumber', str),
-        ('billable', 'billable', bool),
+        ('id', str, False),
+        ('name', str, False),
+        ('projectNumber', str, False),
+        ('billable', bool, False),
     ]
     __fetch_command__ = 'project'
 
@@ -50,9 +50,9 @@ class WeclappProject(WeclappBaseModel):
         tasks = WeclappTask.load()
 
         for task in tasks:
-            proj = projects_map.get(task.project_id, None)
+            proj = projects_map.get(task.projectId, None)
             if proj is None:
-                log.debug('No project loaded for task %s with project_id %s', task.id, task.project_id)
+                log.debug('No project loaded for task %s with projectId %s', task.id, task.projectId)
                 continue
 
             proj.add_task(task)
@@ -66,18 +66,18 @@ class WeclappProject(WeclappBaseModel):
         time_records = WeclappTimeRecord.load(sort='-startDate', pageSize=time_records, serializeNulls=True)
 
         for tr in time_records:
-            task = tasks_map.get(tr.task_id, None)
+            task = tasks_map.get(tr.projectTaskId, None)
             if task is None:
-                log.debug('No task loaded for the time record %s with task_id %s', tr.id, tr.task_id)
-            proj = projects_map.get(tr.project_id, None)
+                log.debug('No task loaded for the time record %s with projectTaskId %s', tr.id, tr.projectTaskId)
+            proj = projects_map.get(tr.projectId, None)
             if proj is None:
-                log.debug('No project loaded for time record %s with project_id %s', tr.id, tr.project_id)
+                log.debug('No project loaded for time record %s with projectId %s', tr.id, tr.projectId)
 
             task.add_time_record(tr)
             tr.task = task
 
         # sorting
         for task in tasks:
-            task.time_records = sorted(task.time_records, key=lambda r: r.startdate, reverse=True)
+            task.time_records = sorted(task.time_records, key=lambda r: r.startDate, reverse=True)
 
         return projects
