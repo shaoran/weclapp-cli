@@ -25,12 +25,8 @@ class WeclappBaseModel(object):
                 else:
                     raise ModelInvalidField('%s: The field \'%s\' cannot be found in public API response or is NULL' % (self.__model__, field))
 
-            try:
-                if not isinstance(val, klass):
-                    raise ModelInvalidField('%s: The field \'%s\' is not of type \'%s\'' % (self.__model__, field, klass.__name__))
-            except Exception as e:
-                import pudb
-                pudb.set_trace()
+            if not isinstance(val, klass):
+                raise ModelInvalidField('%s: The field \'%s\' is not of type \'%s\'' % (self.__model__, field, klass.__name__))
 
 
             setattr(self, field, val)
