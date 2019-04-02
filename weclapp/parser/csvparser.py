@@ -1,3 +1,4 @@
+import sys
 import logging
 
 from datetime import timedelta, datetime
@@ -5,6 +6,7 @@ from dateutil.parser import parse as date_parse
 
 from .parser import Parser
 from .exceptions import FailedToParse, InvalidParserOptionFormat
+from ..models import WeclappTimeRecord
 
 log = logging.getLogger("weclapp-cli")
 
@@ -91,6 +93,74 @@ class CSVParser(Parser):
         headers = [ [ h[0] for h in k ] for k in headers ]
         headers = list(zip(*headers))
 
-        print(headers)
+        hlen = len(headers)
 
-        return []
+        time_records = []
+
+        for linenr,line in enumerate(lines[2:]):
+            cells = [ c.strip() for c in line.split(self.options.sep) ]
+            clen = len(cells)
+            if clen != (2*hlen +1) and clen != 2*hlen:
+                raise FailedToParse('[%s] Line %s has insufficient data, ignoring' % (filename, linenr+3))
+            if clen == 2*hlen:
+                cells.append('')
+
+            try:
+                day = date_parse(cells[0]).date()
+            except:
+                msg = '[%s] Failed to parse time on line %d, ignoring' % (filename, linenr+3)
+                print(msg, file=sys.stderr)
+                log.debug(msg, exc_info=True)
+                continue
+
+            for hidx, head in enumerate(headers):
+                projID, taskID = head
+                when = cells[2*hidx + 1].strip()
+                desc = cells[2*hidx + 2].strip()
+
+                # no time entry for this day
+                if when == '':
+                    continue
+
+                td,duration = time_duration(when, def_td)
+
+                if duration is None:
+                    msg = '[%s] invalid duration format on line %d, ignoring' % (filename, linenr+3)
+                    print(msg, file=sys.stderr)
+                    continue
+
+                dayStart = datetime.fromordinal(day.toordinal()) + td
+
+                tr_args = dict(
+                    projectId=projID,
+                    projectTaskId=taskID,
+                    durationSeconds=int(duration * 3600),
+                    startDate = int(dayStart.timestamp() * 1000),
+                    description = desc,
+                )
+
+                time_records.append(WeclappTimeRecord(**tr_args))
+
+        return time_records
+
+
+def time_duration(val, def_td):
+    try:
+        idx = val.index('/')
+    except:
+        try:
+            return (def_td, float(val))
+        except:
+            return (None,None)
+
+    time = val[0:idx].strip()
+    duration = val[idx+1:].strip()
+
+    try:
+        time = [ int(x) for x in time.split(':') ]
+        td = timedelta(hours=time[0], minutes=time[1])
+        duration = float(duration)
+    except:
+        return (None,None)
+
+    return (td, duration)
