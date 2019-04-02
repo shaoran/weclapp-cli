@@ -13,14 +13,14 @@ class CSVParser(Parser):
 
           DATE    TIME          DESC            TIME          DESC
         +-------+-------------+---------------+-------------+---------------+
-        |       | Projekt NR  |               | Projekt NR  |               |
+        |       | Project iD  |               | Project ID  |               |
         |       | Task ID     |               | Task ID     |               |
         | date  | 5           | description 1 | 3           | description 1 |
         | date  | 6           |               | 2           | description 2 |
         +-------+-------------+---------------+-------------+---------------+
 
     The first two lines function as a header. The first and third cells of the
-    the header rows are ignored. 'Projekt Nr' and TASK ID have to be the
+    the header rows are ignored. 'Project ID' and TASK ID have to be the
     weclapp project number and the project task.
 
     The date column and the time columns are mandatory. The description column
