@@ -1,5 +1,6 @@
 import logging
 
+from datetime import timedelta, datetime
 from dateutil.parser import parse as date_parse
 
 from .parser import Parser
@@ -59,6 +60,12 @@ class CSVParser(Parser):
 
         if len(lines) < 3:
             raise FailedToParse('Invalid format, header is missing or first data line is missing')
+
+        try:
+            timeStart = [ int(x.strip()) for x in self.options.timeStart.split(':') ]
+            def_td = timedelta(hours = timeStart[0], minutes = timeStart[1])
+        except:
+            raise InvalidParserOptionFormat('The parser option \'timeStart\' (\'%s\') is invalid' % self.options.timeStart)
 
         pinfo = []
 
