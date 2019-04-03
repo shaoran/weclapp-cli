@@ -2,6 +2,8 @@ import sys
 import os
 import logging
 
+from colorama import Style, Fore
+
 from ..parser.exceptions import FailedToParse
 from .exceptions import ParserNotFound
 from ..exception import WeclappBaseException, PrintHelp
@@ -34,6 +36,8 @@ class UploadModule(BaseModule):
                 help='A space separated list of options')
         parser.add_argument('--po', action='append', dest='po', metavar='OPT=VAL',
                 help='Parser options, you can use --po multiple times')
+        parser.add_argument('--no-color', action='store_true', default=False, dest='nocolor',
+                help='Disable colored output')
         parser.set_defaults(module = UploadModule)
 
     def run(self):
@@ -81,7 +85,29 @@ class UploadModule(BaseModule):
         for fn in self.namespace.files:
             time_records += self.parseFile(csv_parser, fn)
 
-        print(time_records)
+        newtrs = []
+        for tr in time_records:
+            ans = tr.upload_to_weclapp()
+            if ans:
+                newtrs.append(ans)
+            else:
+                msg = "time record for project {}, task {} on {} with duration {} {} failed to be uploaded"
+                if not self.namespace.nocolor:
+                    msg = Fore.RED + msg + Style.RESET_ALL
+                hours = int(tr.durationSeconds / 3600)
+                plural = 'hours'
+                if hours == 1:
+                    plural = 'hour'
+                print(msg.format(tr.projectId, tr.projectTaskId, tr.startDate, hours, plural))
+
+        msg = "Succesfully uploaded time records"
+        if not self.namespace.nocolor:
+            msg = Fore.GREEN + msg + Style.RESET_ALL
+
+        print(msg)
+
+        for tr in newtrs:
+            tr.print(indent='', with_color=not self.namespace.nocolor, with_projects=True)
         return 0
 
     def parseFile(self, csv_parser, filename):
