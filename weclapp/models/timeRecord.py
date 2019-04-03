@@ -37,6 +37,19 @@ class WeclappTimeRecord(WeclappBaseModel):
 
         self.description = self.description.strip()
 
+    def dict_for_upload(self):
+        ret = {}
+
+        for field in ['billable', 'projectId', 'projectTaskId', 'durationSeconds' ]:
+            ret[field] = getattr(self, field)
+
+        ret['startDate'] = int(self.startDate.timestamp() * 1000)
+
+        if isinstance(self.description, str) and self.description.strip() != '':
+            ret['description'] = self.description
+
+        return ret
+
     def print(self, indent='    ', with_color=True, file=sys.stdout, with_projects=False):
         desc = ''
         if self.description != '':
