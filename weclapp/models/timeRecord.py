@@ -37,7 +37,7 @@ class WeclappTimeRecord(WeclappBaseModel):
 
         self.description = self.description.strip()
 
-    def print(self, indent='    ', with_color=True, file=sys.stdout):
+    def print(self, indent='    ', with_color=True, file=sys.stdout, with_projects=False):
         desc = ''
         if self.description != '':
             desc = self.description
@@ -49,5 +49,15 @@ class WeclappTimeRecord(WeclappBaseModel):
 
         hours = '{:.2f}'.format(hours)
 
-        msg = '{}{:22s}{:5s} hour{:4s}{:10s}'
-        print(msg.format(indent, str(self.startDate), hours, plural, desc), file=file)
+        msg = '{}{}{}{:22s}{:5s} hour{:4s}{:10s}'
+
+        proj = ''
+        task = ''
+        if with_projects:
+            proj = 'PROJECT {:6s}'.format(self.projectId)
+            if hasattr(self, 'projectNumber') and self.projectNumber is not None:
+                nr = self.projectNumber.strip()
+                proj = '{}{:10s}'.format(proj, '[%s]' % self.projectNumber)
+            task = 'TASK {:6s}'.format(self.projectTaskId)
+
+        print(msg.format(indent, proj, task, str(self.startDate), hours, plural, desc), file=file)
