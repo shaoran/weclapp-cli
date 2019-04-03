@@ -132,6 +132,7 @@ class CSVParser(Parser):
                 dayStart = datetime.fromordinal(day.toordinal()) + td
 
                 tr_args = dict(
+                    billable=False, # TODO think about that
                     projectId=projID,
                     projectTaskId=taskID,
                     durationSeconds=int(duration * 3600),
