@@ -74,3 +74,13 @@ class WeclappTimeRecord(WeclappBaseModel):
             task = 'TASK {:6s}'.format(self.projectTaskId)
 
         print(msg.format(indent, proj, task, str(self.startDate), hours, plural, desc), file=file)
+
+    def upload_to_weclapp(self):
+        """
+        uploads the time record to weclapp
+
+        You can only upload time reports without a valid id
+
+        returns the newly created time report, None otherwise
+        """
+        return None
