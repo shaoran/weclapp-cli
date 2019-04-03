@@ -1,8 +1,12 @@
 import sys
+import json
+import logging
 
 from .base import WeclappBaseModel
 
 from datetime import datetime
+
+log = logging.getLogger("weclapp-cli")
 
 class WeclappTimeRecord(WeclappBaseModel):
     __model__ = 'WeclappTimeRecord'
@@ -83,4 +87,13 @@ class WeclappTimeRecord(WeclappBaseModel):
 
         returns the newly created time report, None otherwise
         """
-        return None
+
+        body = json.dumps(self.dict_for_upload())
+
+        try:
+            res = self.__api__.call(self.__fetch_command__, 'POST', body=body, expected_status_code=201)
+        except:
+            log.debug('Failed to upload the time record', exc_info=True)
+            return None
+
+        return type(self)(**res)
