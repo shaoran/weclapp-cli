@@ -1,3 +1,6 @@
+import sys
+from colorama import Fore, Back, Style
+
 from .base import WeclappBaseModel
 
 class WeclappTask(WeclappBaseModel):
@@ -22,3 +25,9 @@ class WeclappTask(WeclappBaseModel):
             return
 
         self.time_records.append(record)
+
+    def print(self, indent='  ', with_color=True, file=sys.stdout):
+        msg = '{}{:38s}[ID: {}]'
+        if with_color:
+            msg = Style.BRIGHT + Fore.BLUE + msg + Style.RESET_ALL
+        print(msg.format(indent, self.name, self.id), file=file)

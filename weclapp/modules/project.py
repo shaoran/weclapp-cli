@@ -1,5 +1,5 @@
 from argparse import RawTextHelpFormatter
-from colorama import Fore, Back, Style
+from colorama import Style
 
 from .base import BaseModule
 from ..models import WeclappProject
@@ -78,47 +78,15 @@ class ProjectModule(BaseModule):
             if proj.hide:
                 continue
 
-            msg = '{:10s}{:30s}[ID: {}] Billable: {}'
-            if with_color:
-                msg = Style.BRIGHT + msg + Style.RESET_ALL
-
-            bill_color = ''
-            if with_color:
-                bill_color = Fore.RED
-            bill_text = 'no'
-
-            if proj.billable:
-                bill_text = 'yes'
-                if with_color:
-                    bill_color = Fore.GREEN
-
-            billable = bill_color + bill_text
-
-            print(msg.format(proj.projectNumber, proj.name, proj.id, billable))
-
+            proj.print(with_color=with_color)
             for task in proj.tasks:
                 if task.hide:
                     continue
 
-                msg = '  {:38s}[ID: {}]'
-                if with_color:
-                    msg = Style.BRIGHT + Fore.BLUE + msg + Style.RESET_ALL
-                print(msg.format(task.name, task.id))
+                task.print(with_color=with_color)
                 total = 0
                 for record in task.time_records:
-                    desc = ''
-                    if record.description != '':
-                        desc = record.description
-
-                    hours = record.durationSeconds / 3600
-                    plural = 's'
-                    if hours == 1:
-                        plural = ''
-
-                    hours = '{:.2f}'.format(hours)
-
-                    msg = '    {:22s}{:5s} hour{:4s}{:10s}'
-                    print(msg.format(str(record.startDate), hours, plural, desc))
+                    record.print(with_color=with_color)
                     total = total + record.durationSeconds
 
                 if total != 0:

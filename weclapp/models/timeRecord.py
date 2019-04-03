@@ -1,3 +1,5 @@
+import sys
+
 from .base import WeclappBaseModel
 
 from datetime import datetime
@@ -34,3 +36,18 @@ class WeclappTimeRecord(WeclappBaseModel):
             self.description = ''
 
         self.description = self.description.strip()
+
+    def print(self, indent='    ', with_color=True, file=sys.stdout):
+        desc = ''
+        if self.description != '':
+            desc = self.description
+
+        hours = int(self.durationSeconds / 3600)
+        plural = 's'
+        if hours == 1:
+            plural = ''
+
+        hours = '{:.2f}'.format(hours)
+
+        msg = '{}{:22s}{:5s} hour{:4s}{:10s}'
+        print(msg.format(indent, str(self.startDate), hours, plural, desc), file=file)

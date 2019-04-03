@@ -1,3 +1,4 @@
+import sys
 import math
 
 from .exceptions import *
@@ -111,3 +112,9 @@ class WeclappBaseModel(object):
             res += [ cls(**p) for p in data['result'] ]
 
         return res
+
+    def print(self, indent='', with_color=True, file=sys.stdout):
+        """
+        Overwrite this
+        """
+        pass

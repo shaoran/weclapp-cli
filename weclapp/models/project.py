@@ -1,4 +1,7 @@
+import sys
 import logging
+
+from colorama import Fore, Back, Style
 
 from .base import WeclappBaseModel
 
@@ -25,6 +28,25 @@ class WeclappProject(WeclappBaseModel):
             return
 
         self.tasks.append(task)
+
+    def print(self, indent='', with_color=True, file=sys.stdout):
+        msg = '{}{:10s}{:30s}[ID: {}] Billable: {}'
+        if with_color:
+            msg = Style.BRIGHT + msg + Style.RESET_ALL
+
+        bill_color = ''
+        if with_color:
+            bill_color = Fore.RED
+        bill_text = 'no'
+
+        if self.billable:
+            bill_text = 'yes'
+            if with_color:
+                bill_color = Fore.GREEN
+
+        billable = bill_color + bill_text
+
+        print(msg.format(indent, self.projectNumber, self.name, self.id, billable))
 
     @classmethod
     def load(cls, tasks=True, time_records=100, **kwargs):
