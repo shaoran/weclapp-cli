@@ -109,7 +109,7 @@ first task. `D1` and `D2` have the project ID and the task ID for the next task.
 
 ### The time records
 
-From the third row onwards you'll define the time records. On the `A` column set the date of the day. The next
+From the third row onward you'll define the time records. On the `A` column set the date of the day. The next
 cell contains the number of hours you've worked on the project and the next column is the description of
 the time record. The description may be empty. The next column is for the next number of hours and so on.
 
@@ -216,7 +216,7 @@ developed by [weclapp GmbH][4]. Any questions you have about weclapp, please go 
 as a result of using this tool.**
 
 
-**LICENCE**: GPL-2
+**LICENSE**: GPL-2
 
 [1]: https://www.weclapp.com/
 [2]: https://pypi.org/
