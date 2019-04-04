@@ -221,5 +221,5 @@ as a result of using this tool.**
 [1]: https://www.weclapp.com/
 [2]: https://pypi.org/
 [3]: https://dateutil.readthedocs.io/en/stable/parser.html#dateutil.parser.parse
-[time-sheet]: images/time-sheet.png
+[time-sheet]: wiki/images/time-sheet.png
 [4]: https://www.weclapp.com/de/impressum/
