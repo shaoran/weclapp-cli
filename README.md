@@ -198,7 +198,7 @@ To use the "*matrix*" parser:
 $ weclapp-cli upload -p matrix file.csv
 ```
 
-See [link to wiki] for information about custom parsers
+See [Custom Parsers][5] for information about custom parsers
 
 # Contributions
 
@@ -223,3 +223,4 @@ as a result of using this tool.**
 [3]: https://dateutil.readthedocs.io/en/stable/parser.html#dateutil.parser.parse
 [time-sheet]: wiki/images/time-sheet.png
 [4]: https://www.weclapp.com/de/impressum/
+[5]: https://github.com/shaoran/weclapp-cli/wiki/Custom-Parsers
