@@ -1,1 +1,4 @@
-Welcome to the weclapp-cli wiki!
+# WECLAPP CLI
+
+- [[Custom Parsers]]
+- [[API Calls]]
