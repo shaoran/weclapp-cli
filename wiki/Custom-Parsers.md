@@ -70,7 +70,7 @@ time_record.print(indent='')
 
 ## Custom class structure
 
-```
+```python
 from weclapp import Parser
 
 class MyCustomCSV(Parser):
