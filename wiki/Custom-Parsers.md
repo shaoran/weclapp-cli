@@ -140,9 +140,6 @@ class MySimpleCSV(Parser):
             }
 
             timerecords.append(WeclappTimeRecord(**tr_dict))
-
-
-
         return timerecords
 
 
@@ -165,8 +162,5 @@ def main():
 if __name__ == '__main__':
     sys.exit(main())
 ```
-
-
-
 
 [1]: https://github.com/shaoran/weclapp-cli/blob/master/weclapp/models/timeRecord.py#L13
