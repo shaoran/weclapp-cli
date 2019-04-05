@@ -163,4 +163,79 @@ if __name__ == '__main__':
     sys.exit(main())
 ```
 
+# Including your parser in `weclapp-cli`
+
+The default path of the config file is `${HOME}/.config/weclapp-cli/config.yml`. To include
+your parser(s) in `weclapp-cli`, you need to create a file `csv_exporter.py` in the same
+directory of the config file. By default you should create the file
+`${HOME}/.config/weclapp-cli/csv_exporter.py`.
+
+The `csv_exporter.py` file must have a variable `parsers` which is a list of your custom
+parsers. Every item in this list must be a dictionary:
+
+    { 'name': 'your parser name', 'parser': <the parser class>, [ 'default': <bool> ] }
+
+`name` should be a unique string. With `weclapp-cli upload --parser "parser-name"` you can select
+the parser to be used. If the `default` key is `True`, then your parser will become the default
+parser and you don't need to use the `--parser` option.
+
+## Example
+
+```python
+# ${HOME}/.config/weclapp-cli/csv_exporter.py
+
+import pandas as pd
+from weclapp import Parser, WeclappTimeRecord, FailedToParse
+
+class MySimpleCSV(Parser):
+    __options__ = [
+        ('sep', ';', 'CSV separator'),
+    ]
+
+    def parseFile(self, filename):
+        try:
+            df = pd.read_csv(filename, sep=self.options.sep, parse_dates=['date'])
+        except Exception as e:
+            raise FailedToParse('Could not parse csv file: %s' % (str(e)))
+
+        timerecords = []
+
+        for idx, row in df.iterrows():
+            tr_dict = {
+                'startDate': int(row['date'].timestamp() * 1000),
+                'projectId': str(row['projectId']),
+                'projectTaskId': str(row['projectTaskId']),
+                'durationSeconds': row['durationSeconds'] * 3600,
+                'description': row['description'],
+            }
+
+            timerecords.append(WeclappTimeRecord(**tr_dict))
+        return timerecords
+
+parsers = [
+    { 'name': 'simplecsv', 'parser': MySimpleCSV, 'default': True },
+]
+```
+
+**Display list of parsers**
+
+    $ weclapp-cli upload --list
+    simplecsv
+    csv
+
+**Display command line arguments for your parser**
+
+    $ weclapp-cli upload --parser simplecsv --list-parser-options
+    Parser: simplecsv
+
+    KEY            VALUE          DESCRIPTION
+    -----------------------------------------
+    sep            ;              CSV separator
+
+
+    use --po "KEY:VAL" to set an option. You can use --po multiple times
+
+If your parser is the default, you don't need to pass `--parser simplecsv`
+
+
 [1]: https://github.com/shaoran/weclapp-cli/blob/master/weclapp/models/timeRecord.py#L13
