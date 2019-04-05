@@ -32,8 +32,6 @@ class UploadModule(BaseModule):
                 help='The CSV file to be parsed')
         parser.add_argument('--list-parser-options', action='store_true', default=False, dest='list_parser_opts',
                 help='Show the parser options. Use --parser to set the parser, otherwise the default one is shown')
-        parser.add_argument('--parser-options', action='store', metavar='OPTIONS', default='', dest='parser_opts',
-                help='A space separated list of options')
         parser.add_argument('--po', action='append', dest='po', metavar='OPT=VAL',
                 help='Parser options, you can use --po multiple times')
         parser.add_argument('--no-color', action='store_true', default=False, dest='nocolor',
