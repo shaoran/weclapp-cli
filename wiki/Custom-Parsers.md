@@ -43,6 +43,7 @@ The next table shows the keys that are needed in order for uploading a new time 
 | `startDate`       | the time of day             | `int`, JS timestamp | yes                |
 | `description`     | a description               | `str`               | No                 |
 
+**Example**
 
 ```python
 from datetime import datetime
@@ -65,6 +66,105 @@ time_record.print(indent='')
 # 2019-04-05 09:00:00   3.00  hours   A simple task
 ```
 
-## Minimal example
+## Custom class structure
+
+```
+from weclapp import Parser
+
+class MyCustomCSV(Parser):
+    __options__ = [
+        # your cmd line options
+    ]
+
+    def setup(self):
+        # in case you need custom initialization
+        pass
+
+    def parseFile(self, filename):
+        # the parser
+        # return a list of weclapp.WeclappTimeRecord objects
+        pass
+
+```
+
+# Basic example
+
+This example shows how to construct a parser class that handles files where
+
+- the first column is a date with time
+- the second column is the project id
+- the third column is the task id
+- the forth column is the duration
+- the fifth column is the description
+
+
+It should parse this file
+
+    date;projectId;projectTaskId;durationSeconds;description
+    2019.02.01 09:30 UTC;112211;888888;5;some description
+    2019.02.01 09:30 UTC;112211;777777;3;some description
+
+
+A simple program:
+
+```python
+#!/usr/bin/env python
+
+import sys
+
+import pandas as pd
+from weclapp import Parser, WeclappTimeRecord, FailedToParse
+
+class MySimpleCSV(Parser):
+    __options__ = [
+        ('sep', ';', 'CSV separator'),
+    ]
+
+    def parseFile(self, filename):
+        try:
+            df = pd.read_csv(filename, sep=self.options.sep, parse_dates=['date'])
+        except Exception as e:
+            raise FailedToParse('Could not parse csv file: %s' % (str(e)))
+
+        timerecords = []
+
+        for idx, row in df.iterrows():
+            tr_dict = {
+                'startDate': int(row['date'].timestamp() * 1000),
+                'projectId': str(row['projectId']),
+                'projectTaskId': str(row['projectTaskId']),
+                'durationSeconds': row['durationSeconds'] * 3600,
+                'description': row['description'],
+            }
+
+            timerecords.append(WeclappTimeRecord(**tr_dict))
+
+
+
+        return timerecords
+
+
+def main():
+    if len(sys.argv) != 2:
+        print('usage: %s csv-file' % sys.argv[0], file=sys.stderr)
+        return 1
+
+    opts = dict(sep=';')
+
+    p = MySimpleCSV(options=opts)
+
+    records = p.parseFile(sys.argv[1])
+
+    for rec in records:
+        rec.print(indent='')
+
+    return 0
+
+if __name__ == '__main__':
+    sys.exit(main())
+```
+
+
+
 
 [1]: https://github.com/shaoran/weclapp-cli/blob/master/weclapp/models/timeRecord.py#L13
