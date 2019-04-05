@@ -1,3 +1,14 @@
+
+## Table of contents
+
+- [Custom Parsers](#)
+    - [Creating `weclapp.WeclappTimeRecord` objects](#creating-weclappweclapptimerecord-objects)
+    - [Custom class structure](#custom-class-structure)
+- [Basic example](#basic-example)
+- [Including your parser in `weclapp-cli`](#including-your-parser-in-weclapp-cli)
+    - [Example](#example)
+
+
 Every parser has to inherit from the `weclapp.Parser` class. The `upload` module
 will create a list of parsers and depending on the `--parser` option of the `upload` module,
 it will select one parser.
