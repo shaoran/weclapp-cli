@@ -26,6 +26,8 @@ If the parsing fails, you should raise one of these exceptions:
 - `weclapp.FailedToParse`: when the parser fails to parse the file, for whatever reason
 - `weclapp.InvalidParserOptionFormat`: when a command line arguments has an invalid value
 
+You can access the command line options for the parser through `self.options`.
+
 ## Creating `weclapp.WeclappTimeRecord` objects
 
 The time record object that is returned by weclapp's public API is a large dictionary. Only a few
