@@ -12,6 +12,7 @@ setup(name='weclapp-cli',
     version=VERSION,
     description='A small cli for uploading time records via a CSV file',
     long_description=longdesc,
+    long_description_content_type='text/markdown',
     url='https://shaoran.github.io/weclapp-cli/',
     author='Pablo Yanez Trujillo',
     classifiers=[
