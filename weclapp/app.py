@@ -9,6 +9,7 @@ from .api import WeclappAPI
 from . import ConfigInvalid, WeclappBaseException
 from .models.base import WeclappBaseModel
 from .exception import PrintHelp
+from .version import VERSION
 
 modules = [
     ConfigModule,
@@ -33,6 +34,9 @@ class WeclappApp(object):
         parser.add_argument('-d', '--debug', action='store_true', default=False,
                 help='Enable debug output')
 
+        parser.add_argument('-v', '--version', action='store_true', default=False,
+                help='Print version')
+
         subparser = parser.add_subparsers(title="COMMANDS", description='weclapp-cli commands',
                 help='Pass -h after the command to get additional help for the command')
 
@@ -48,6 +52,10 @@ class WeclappApp(object):
 
     def run(self):
         namespace = self.parser.parse_args(self.args[1:])
+        if namespace.version:
+            print(VERSION)
+            return 1
+
         if not hasattr(namespace, 'module'):
             print('COMMAND not specified\n---------------------\n', file=sys.stderr)
             self.parser.print_help(file=sys.stderr)
