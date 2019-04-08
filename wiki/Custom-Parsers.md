@@ -107,7 +107,7 @@ This example shows how to construct a parser class that handles files where
 - the first column is a date with time
 - the second column is the project id
 - the third column is the task id
-- the forth column is the duration
+- the fourth column is the duration
 - the fifth column is the description
 
 
