@@ -16,7 +16,7 @@ setup(name='weclapp-cli',
     url='https://shaoran.github.io/weclapp-cli/',
     author='Pablo Yanez Trujillo',
     classifiers=[
-        'Development Status :: 1 - Planning',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: End Users/Desktop',
         'Topic :: Office/Business',
         'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
