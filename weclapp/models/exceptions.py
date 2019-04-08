@@ -1,3 +1,5 @@
+__all__ = [ 'ModelInvalidField', 'ApiNotLoaded', 'WrongFetchCommand' ]
+
 from ..exception import WeclappBaseException
 
 class WeclappModelBaseException(WeclappBaseException):
@@ -22,6 +24,3 @@ class WrongFetchCommand(WeclappModelBaseException):
     Raised when the model class has a wrong fetch command
     """
     pass
-
-
-__all__ = [ 'ModelInvalidField', 'ApiNotLoaded', 'WrongFetchCommand' ]

@@ -1,3 +1,5 @@
+__all__ = [ 'ConfigNotFound', 'ConfigCannotWrite', 'ConfigParsedFailed', 'ConfigUnableToRead', 'ConfigInvalid' ]
+
 from ..exception import WeclappBaseException
 
 class ConfigError(WeclappBaseException):
@@ -46,6 +48,3 @@ class ConfigInvalid(ConfigError):
     Invalid config, either missing of cannot be parsed
     """
     pass
-
-
-__all__ = [ 'ConfigNotFound', 'ConfigCannotWrite', 'ConfigParsedFailed', 'ConfigUnableToRead', 'ConfigInvalid' ]

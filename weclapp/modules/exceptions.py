@@ -1,3 +1,5 @@
+__all__ = [ 'InvalidCLIArguments', 'ParserNotFound' ]
+
 from ..exception import WeclappBaseException
 
 class WeclappModuleBaseException(WeclappBaseException):
@@ -15,6 +17,3 @@ class ParserNotFound(WeclappBaseException):
     Raised when the parser is not found
     """
     pass
-
-__all__ = [ 'InvalidCLIArguments', 'ParserNotFound' ]
-

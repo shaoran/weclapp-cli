@@ -1,3 +1,5 @@
+__all__ = [ 'ParserInvalidType', 'ParserNameNotUnique', 'FailedToParse', 'InvalidParserOptionFormat' ]
+
 from ..exception import WeclappBaseException
 
 class WeclappParserBaseException(WeclappBaseException):
@@ -26,5 +28,3 @@ class InvalidParserOptionFormat(WeclappParserBaseException):
     """
     Raised when the parsed option does not adhere KEY=VALUE
     """
-
-__all__ = [ 'ParserInvalidType', 'ParserNameNotUnique', 'FailedToParse', 'InvalidParserOptionFormat' ]
