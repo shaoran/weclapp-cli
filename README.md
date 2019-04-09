@@ -1,4 +1,4 @@
-# WECLAP CLI
+# WECLAPP CLI
 
 `weclapp-cli` is a limited command line interface to [weclapp][1]'s time records. I wrote this
 tool because I want to upload several time records at once that have been stored in an Excel
