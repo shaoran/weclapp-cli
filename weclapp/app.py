@@ -69,7 +69,10 @@ class WeclappApp(object):
         try:
             cfg.parse()
         except WeclappBaseException:
-            raise ConfigInvalid('Invalid configuration. Please execute \'weclapp-cli config\' to create a new configuration')
+            # if module is config, ignore it
+            # if config is missing, a new one should be created
+            if namespace.module.__name__ != 'ConfigModule':
+                raise ConfigInvalid('Invalid configuration. Please execute \'weclapp-cli config\' to create a new configuration')
 
         if namespace.module.autoload_api:
             WeclappBaseModel.__api__ = WeclappAPI(cfg.config)
