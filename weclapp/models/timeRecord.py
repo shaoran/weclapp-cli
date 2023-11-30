@@ -47,6 +47,12 @@ class WeclappTimeRecord(WeclappBaseModel):
         for field in ['billable', 'projectId', 'projectTaskId', 'durationSeconds' ]:
             ret[field] = getattr(self, field)
 
+        # Necessary fix because variable is set to false somewhere
+        ret['billable'] = bool(True)
+
+        # Necessary fix since weclapp needs this vaule to be != 0 or billable will be set to false
+        ret['billableDurationSeconds'] = ret['durationSeconds']
+
         ret['startDate'] = int(self.startDate.timestamp() * 1000)
 
         if isinstance(self.description, str) and self.description.strip() != '':
@@ -89,6 +95,9 @@ class WeclappTimeRecord(WeclappBaseModel):
         """
 
         body = json.dumps(self.dict_for_upload())
+
+        # Uncomment the following line if you want to see the plain request being sent
+        #print("DEBUG Request body: %s" % body)
 
         try:
             res = self.__api__.call(self.__fetch_command__, 'POST', body=body, expected_status_code=201)
