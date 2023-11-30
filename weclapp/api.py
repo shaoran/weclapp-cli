@@ -97,8 +97,8 @@ class WeclappAPI(object):
             kwargs = {}
             if len(cts) > 1 and cts[1].startswith('charset'):
                 enc = cts[1].split("=")
-                if len(enc) > 1:
-                    kwargs['encoding'] = enc[1]
+                #if len(enc) > 1:
+                #    kwargs['encoding'] = enc[1]
 
             try:
                 data = json.loads(data, **kwargs)
