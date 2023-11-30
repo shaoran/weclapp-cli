@@ -49,7 +49,7 @@ class WeclappProject(WeclappBaseModel):
         print(msg.format(indent, self.projectNumber, self.name, self.id, billable))
 
     @classmethod
-    def load(cls, tasks=True, time_records=100, **kwargs):
+    def load(cls, tasks=True, time_records=-1, **kwargs):
         """
         Loads projects
 
