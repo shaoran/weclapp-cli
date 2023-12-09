@@ -59,7 +59,7 @@ class WeclappBaseModel(object):
 
 
     @classmethod
-    def load(cls, sort=None, pageSize=100, serializeNulls=True):
+    def load(cls, sort=None, pageSize=-1, serializeNulls=True):
         """
         Fetches the data from the public API
 
